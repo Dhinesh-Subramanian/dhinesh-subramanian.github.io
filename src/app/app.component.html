@@ -1,0 +1,95 @@
+<div class="container-lg">
+  <h1 class="heading">News Today</h1>
+  <ul class="nav nav-pills news-category" id="pills-tab" role="tablist">
+    <li
+      class="nav-item"
+      role="presentation"
+      *ngFor="let category of categories; let i = index"
+    >
+      <button
+        class="nav-link category"
+        [class.active]="i === 0"
+        data-bs-toggle="pill"
+        type="button"
+        role="tab"
+        [attr.data-url]="category.url"
+        (click)="getNewsByCategory(category.url)"
+      >
+        {{ category.name }}
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button
+        class="nav-link"
+        [class.disabled]="categories.length === 5"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#categoryModal"
+      >
+        <img src="assets/add_icon.svg" alt="add-category-dialog-open" />
+      </button>
+    </li>
+  </ul>
+  <input
+    type="search"
+    name="filter"
+    id="filter"
+    class="filter"
+    placeholder="Search for keywords, author"
+    #liveSearch
+  />
+  <div
+    class="modal fade"
+    id="categoryModal"
+    tabindex="-1"
+    aria-labelledby="categoryModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content dialog-container">
+        <div class="modal-body dialog">
+          <h1 class="dialog-heading">Add Category</h1>
+          <form (ngSubmit)="addCategory()" [formGroup]="categoryForm">
+            <input
+              type="text"
+              name="name"
+              id="name"
+              class="dialog-field"
+              placeholder="Category Name"
+              formControlName="name"
+            />
+            <input
+              type="text"
+              name="name"
+              id="name"
+              class="dialog-field"
+              placeholder="API URL"
+              formControlName="url"
+            />
+            <button type="submit" class="dialog-btn" data-bs-dismiss="modal">
+              <img
+                src="assets/add_icon_white.svg"
+                alt="add-category"
+                class="dialog-btn-img"
+              />Add
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="article" *ngFor="let article of news">
+    <div class="article-text">
+      <h2 class="article-heading">{{ article.title }}</h2>
+      <div class="article-info">
+        {{ article.author }} <span class="seperator">&bull;</span>
+        {{ article.publishedAt | date }}
+      </div>
+      <div class="article-body">{{ article.description }}</div>
+    </div>
+    <div
+      class="article-img"
+      [style.backgroundImage]="'url(' + article.urlToImage + ')'"
+    ></div>
+  </div>
+</div>
